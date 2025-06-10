@@ -1,17 +1,7 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 
 const Persona = (props) => {
-  const[tipoDNI, setTipoDNI]=useState(props.persona.tipoDocumento)
-
-/*   const cambioValor=(e)=>{
-    console.log(e.target.value);
-    setTipoDNI(e.target.value)
-  }
-    const envioForm=(e)=>{
-    e.preventDefault()
-    console.log(e.target.value);
-  } */
-
+  const [tipoDNI, setTipoDNI] = useState(props.persona.tipoDocumento);
   return (
     <li>
       <b>Nombre: {props.persona.nombre}</b>
@@ -22,22 +12,19 @@ const Persona = (props) => {
       <br />
       <b>DNI: {props.persona.documento}</b>
       <br />
-      <b>Tipo:{tipoDNI }</b>
+      <b>Tipo:{tipoDNI}</b>
       <br />
-      <b>Fecha nacimiento:{props.persona.fechaNacimiento || "No especificado"}</b>
+      <b>
+        Fecha nacimiento:{props.persona.fechaNacimiento || "No especificado"}
+      </b>
       <br />
       <b>{props.persona.dni}</b>
-      {tipoDNI==="PASAPORTE" && <p>Extranjero</p>}
-      {/* <form onSubmit={envioForm}>
-        <input type="text"/>
-        <button type="submit">enviar</button>
-      </form> */}
-{/*       <select onChange={cambioValor}>
-        <option value="DNI">DNI</option>
-        <option value="LE">LE</option>
-        <option value="LE">LC</option>
-        <option value="PASAPORTE">PASAPORTE</option>
-      </select> */}
+      {tipoDNI === "PASAPORTE" && <p>Extranjero</p>}
+      <button
+        onClick={() => props.handlerEliminarPersona(props.persona.documento)}
+      >
+        Eliminar
+      </button>
     </li>
   );
 };
