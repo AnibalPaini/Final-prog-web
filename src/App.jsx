@@ -4,6 +4,8 @@ import Listado from "./components/Listado/Listado.jsx";
 import ListadoPersonas from "./components/ListadoPersonas/ListadoPersonas.jsx";
 import FormPersona from "./components/FormPersona.jsx";
 
+const Context = React.createContext();
+
 const App = () => {
   const [listadoPersonas, setListadoPersonas] = useState(
     JSON.parse(localStorage.getItem("personas")) || []
