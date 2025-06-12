@@ -1,7 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
+import {Context} from "../../App.jsx"
 
 const Persona = (props) => {
   const [tipoDNI, setTipoDNI] = useState(props.persona.tipoDocumento);
+  const handlerEliminarPersona=useContext(Context)
+  
   return (
     <li>
       <b>Nombre: {props.persona.nombre}</b>
@@ -21,7 +24,7 @@ const Persona = (props) => {
       <b>{props.persona.dni}</b>
       {tipoDNI === "PASAPORTE" && <p>Extranjero</p>}
       <button
-        onClick={() => props.handlerEliminarPersona(props.persona.documento)}
+        onClick={() => handlerEliminarPersona(props.persona.documento)}
       >
         Eliminar
       </button>

@@ -1,15 +1,30 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useReducer } from "react";
 import Persona from "./components/Persona/Persona.jsx";
 import Listado from "./components/Listado/Listado.jsx";
 import ListadoPersonas from "./components/ListadoPersonas/ListadoPersonas.jsx";
 import FormPersona from "./components/FormPersona.jsx";
 
-const Context = React.createContext();
+export const Context = React.createContext();
+
+function personasReducer(personas, action){
+  switch(action.type){
+    case "agregar": return [...personas, action.persona]; 
+    case "eliminar": return personas.filter(persona=> persona.documento !== action.documento)
+    default: throw new Error("Esta accion no esta definida!");
+    
+  }
+}
+
+const initialPersonas=JSON.parse(localStorage.getItem("personas")) || []
 
 const App = () => {
-  const [listadoPersonas, setListadoPersonas] = useState(
+/*   const [listadoPersonas, setListadoPersonas] = useState(
     JSON.parse(localStorage.getItem("personas")) || []
-  );
+  ); */
+
+  const [listadoPersonas, dispatch] = useReducer(personasReducer, initialPersonas)
+
+  
 
   const [personaActual, setPersonaActual] = useState({
     nombre: "",
@@ -32,14 +47,15 @@ const App = () => {
 
   const handlerSubmit = (e) => {
     e.preventDefault();
-    setListadoPersonas((prev) => [...prev, personaActual]);
+    dispatch({type:"agregar", persona: personaActual})
+/*     setListadoPersonas((prev) => [...prev, personaActual]);
     setPersonaActual({
       nombre: "",
       apellido: "",
       documento: "",
       tipoDocumento: "DNI",
       telefono: "",
-    });
+    }); */
   };
 
   const handleOnChange = (e) => {
@@ -51,9 +67,10 @@ const App = () => {
   };
 
   const handlerEliminarPersona = (documento) => {
-    setListadoPersonas((prev) =>
+    dispatch({type:"eliminar", documento: documento})
+    /* setListadoPersonas((prev) =>
       prev.filter((persona) => persona.documento !== documento)
-    );
+    ); */
   };
 
   const handleChange = (e) => {
@@ -67,10 +84,11 @@ const App = () => {
         handlerSubmit={handlerSubmit}
         handleOnChange={handleOnChange}
       />
-      <ListadoPersonas
-        personas={listadoPersonas}
-        handlerEliminarPersona={handlerEliminarPersona}
-      />
+      <Context.Provider value={handlerEliminarPersona}>
+        <ListadoPersonas
+          personas={listadoPersonas}
+        />
+      </Context.Provider>
     </>
   );
 };
